@@ -5,6 +5,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Produto, Pedido
 
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+
 
 def index(request):
     pagina = Pagina.objects.first()
@@ -48,3 +51,16 @@ def perfil(request):
     return render(request, 'core/perfil.html', {
         'pedidos': pedidos
     })
+
+
+def cadastro(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            usuario = form.save()
+            login(request, usuario)
+            return redirect('index')
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'core/cadastro.html', {'form': form})
