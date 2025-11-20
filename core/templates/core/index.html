@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-4">{{ pagina.texto_chamada }}</h1>
+
+<p>{{ pagina.texto_sobre }}</p>
+
+<hr>
+
+<h2 class="mb-3">Instrumentos Disponíveis</h2>
+
+<div class="row">
+    {% for produto in produtos %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <img src="{{ produto.foto.url }}" class="card-img-top" style="height: 250px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">{{ produto.nome }}</h5>
+                <p class="card-text">R$ {{ produto.preco }}</p>
+                <a href="{% url 'comprar' produto.id %}" class="btn btn-primary w-100">Comprar</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
