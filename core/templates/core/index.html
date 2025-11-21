@@ -1,71 +1,70 @@
-{% extends 'core/base.html' %}
-{% block title %}{{ pagina.nome_do_site }}{% endblock %}
+{% extends "core/base.html" %}
+{% load static %}
 
 {% block content %}
 
-<!-- SEÇÃO SOBRE -->
-<div class="container mt-5">
+<link rel="stylesheet" href="{% static 'core/style.css' %}">
 
-    <div class="row align-items-center">
-
-        <!-- IMAGEM Sobre -->
-        <div class="col-md-6 mb-4">
-            {% if pagina.imagem_sobre %}
-                <img src="{{ pagina.imagem_sobre.url }}"
-                     class="img-fluid rounded shadow"
-                     style="max-height: 350px; object-fit: cover;"
-                     alt="Sobre {{ pagina.nome_do_site }}">
-            {% endif %}
-        </div>
-
-        <!-- TEXTO Sobre -->
-        <div class="col-md-6 mb-4">
-            <h2 class="mb-3">{{ pagina.titulo_sobre }}</h2>
-            <p style="font-size: 17px; line-height: 1.7;">
-                {{ pagina.descricao_sobre }}
-            </p>
-        </div>
-
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-text">
+        <h1>{{ pagina_global.texto_chamada }}</h1>
+        <a href="{% url 'cadastro' %}" class="hero-btn">CADASTRE-SE</a>
     </div>
-</div>
+</section>
 
-<hr class="my-5">
+<!-- SOBRE SECTION -->
+<section class="sobre">
+    <div class="sobre-texto">
+        <h2>Sobre Nós</h2>
+        <p>{{ pagina_global.texto_sobre }}</p>
+    </div>
 
-<!-- SEÇÃO PRODUTOS -->
-<div class="container mb-5">
-    <h2 class="mb-4 text-center">Instrumentos Disponíveis</h2>
+    <div class="sobre-imagem">
+        <img src="{{ pagina_global.imagem_sobre.url }}" alt="Sobre nós">
+    </div>
+</section>
 
-    <div class="row justify-content-center">
+<!-- PRODUTOS SECTION -->
+<section class="produtos-section">
+    <h2>Produtos</h2>
 
-        {% for p in produtos %}
-        <div class="col-md-4 mb-4 d-flex justify-content-center">
-
-            <div class="card shadow" style="border-radius: 12px; width: 95%;">
-
-                <img src="{{ p.foto.url }}"
-                     class="card-img-top"
-                     style="height: 260px; object-fit: cover; border-radius: 12px 12px 0 0;">
-
-                <div class="card-body">
-                    <h5 class="card-title">{{ p.nome }}</h5>
-                    <p class="text-muted">R$ {{ p.preco }}</p>
-
-                <a href="{% url 'produto' p.id %}" class="btn btn-outline-primary w-100 mb-2">
-                    Ver Detalhes
-                </a>
-
-                <a href="{% url 'comprar' p.id %}" class="btn btn-primary w-100">
-                    Comprar
-                </a>
-
-                </div>
-
-            </div>
-
+    <div class="produtos-container">
+        {% for produto in produtos %}
+        <div class="card-produto">
+            <img src="{{ produto.foto.url }}" alt="Imagem do produto">
+            <h3>{{ produto.nome }}</h3>
+            <p class="preco">R$ {{ produto.preco }}</p>
+            <a href="{% url 'pedido' produto.id %}" class="btn-comprar">Comprar</a>
         </div>
         {% endfor %}
-
     </div>
-</div>
+</section>
+
+<!-- CONTATO SECTION -->
+<section class="contato-section">
+    <h2>Fale Conosco</h2>
+
+    <form method="POST" class="form-contato">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-enviar">Enviar</button>
+    </form>
+
+    <div class="contato-info">
+        <p><strong>Endereço:</strong> {{ pagina_global.endereco }}</p>
+        <p><strong>WhatsApp:</strong> {{ pagina_global.whatsapp }}</p>
+        <p><strong>Email:</strong> {{ pagina_global.email }}</p>
+    </div>
+
+</section>
+
+<!-- MAPA -->
+<section class="mapa">
+    <iframe 
+        src="https://www.google.com/maps?q={{ pagina_global.endereco|urlencode }}&output=embed"
+        loading="lazy">
+    </iframe>
+</section>
 
 {% endblock %}
