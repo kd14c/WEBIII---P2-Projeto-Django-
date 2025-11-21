@@ -1,0 +1,39 @@
+{% extends 'core/base.html' %}
+{% block title %}Produtos{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4 text-center">Todos os Instrumentos</h2>
+
+    <div class="row">
+
+        {% for p in produtos %}
+        <div class="col-md-4 mb-4 d-flex justify-content-center">
+
+            <div class="card shadow" style="border-radius: 12px; width: 95%;">
+
+                <img src="{{ p.foto.url }}"
+                     class="card-img-top"
+                     style="height: 260px; object-fit: cover; border-radius: 12px 12px 0 0;">
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ p.nome }}</h5>
+                    <p class="text-muted">R$ {{ p.preco }}</p>
+
+                    <a href="{% url 'comprar' p.id %}" class="btn btn-primary w-100">
+                        Comprar
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

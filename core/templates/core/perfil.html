@@ -2,40 +2,56 @@
 {% block title %}Meu Perfil{% endblock %}
 
 {% block content %}
-<div class="card shadow p-4 mb-4" style="border-radius: 12px;">
-    <h3 class="mb-3">Perfil do Usuário</h3>
 
-    <p><strong>Nome:</strong> {{ user.username }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
+<div class="container">
+
+    <!-- Seção de Dados do Usuário -->
+    <div class="card shadow p-4 mb-4" style="border-radius: 12px;">
+        <h3 class="mb-3">Informações do Usuário</h3>
+
+        <p><strong>Nome de usuário:</strong> {{ user.username }}</p>
+        {% if user.email %}
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        {% endif %}
+        <p><strong>Usuário logado desde:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
+    </div>
+
+    <!-- Seção de Pedidos -->
+    <div class="card shadow p-4" style="border-radius: 12px;">
+        <h3 class="mb-3">Meus Pedidos</h3>
+
+        {% if pedidos %}
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Total</th>
+                        <th>Data</th>
+                        <th>Imagem</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for pedido in pedidos %}
+                    <tr>
+                        <td>{{ pedido.produto.nome }}</td>
+                        <td>{{ pedido.quantidade }}</td>
+                        <td>R$ {{ pedido.total }}</td>
+                        <td>{{ pedido.data|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            <img src="{{ pedido.produto.foto.url }}"
+                                 style="height: 60px; width: 60px; object-fit: cover; border-radius: 6px;">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Nenhum pedido encontrado.</p>
+        {% endif %}
+    </div>
+
 </div>
 
-<div class="card shadow p-4" style="border-radius: 12px;">
-    <h4 class="mb-3">Meus Pedidos</h4>
-
-    {% if pedidos %}
-        <table class="table table-bordered table-striped">
-            <thead class="table-light">
-                <tr>
-                    <th>Produto</th>
-                    <th>Quantidade</th>
-                    <th>Total</th>
-                    <th>Data</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for pedido in pedidos %}
-                <tr>
-                    <td>{{ pedido.produto.nome }}</td>
-                    <td>{{ pedido.quantidade }}</td>
-                    <td>R$ {{ pedido.total }}</td>
-                    <td>{{ pedido.data|date:"d/m/Y H:i" }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>Nenhum pedido encontrado.</p>
-    {% endif %}
-</div>
 {% endblock %}

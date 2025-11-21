@@ -27,11 +27,23 @@ def comprar(request, id):
 
     if request.method == 'POST':
         quantidade = int(request.POST.get('quantidade'))
+
+        # Validação de estoque
+        if quantidade < 1:
+            messages.error(request, "Quantidade inválida.")
+            return redirect('comprar', id=id)
+
+        if quantidade > produto.estoque:
+            messages.error(request, "Quantidade maior que o estoque disponível.")
+            return redirect('comprar', id=id)
+
         total = quantidade * produto.preco
 
+        # Atualiza estoque
         produto.estoque -= quantidade
         produto.save()
 
+        # Cria pedido
         Pedido.objects.create(
             usuario=request.user,
             produto=produto,
@@ -39,6 +51,7 @@ def comprar(request, id):
             total=total
         )
 
+        messages.success(request, "Pedido realizado com sucesso!")
         return redirect('perfil')
 
     return render(request, 'core/pedido.html', {
@@ -51,7 +64,7 @@ def perfil(request):
     pedidos = Pedido.objects.filter(usuario=request.user).order_by('-data')
 
     return render(request, 'core/perfil.html', {
-        'pedidos': pedidos
+        'pedidos': pedidos,
     })
 
 
@@ -84,3 +97,13 @@ def contato(request):
         return redirect('contato')
 
     return render(request, 'core/contato.html')
+
+
+def produtos(request):
+    lista = Produto.objects.all()
+    pagina = Pagina.objects.first()
+
+    return render(request, 'core/produtos.html', {
+        'produtos': lista,
+        'pagina': pagina
+    })
