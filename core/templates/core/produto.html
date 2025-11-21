@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ produto.nome }}{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5 mb-5">
+
+    <div class="card shadow p-4" style="border-radius: 12px; max-width: 1000px; margin: auto;">
+
+        <div class="row">
+
+            <!-- Imagem do Produto -->
+            <div class="col-md-6 text-center mb-3">
+                <img src="{{ produto.foto.url }}"
+                     class="img-fluid rounded shadow"
+                     style="max-height: 350px; object-fit: cover;">
+            </div>
+
+            <!-- Detalhes -->
+            <div class="col-md-6">
+
+                <h3 class="mb-3">{{ produto.nome }}</h3>
+
+                <p class="text-muted" style="font-size: 16px; line-height: 1.7;">
+                    {{ produto.descricao }}
+                </p>
+
+                <h4 class="mt-4 mb-4">Preço: <strong>R$ {{ produto.preco }}</strong></h4>
+
+                <a href="{% url 'comprar' produto.id %}" class="btn btn-success w-100"
+                   style="font-size: 18px; padding: 12px;">
+                    Comprar Agora
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

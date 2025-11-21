@@ -22,9 +22,14 @@
                     <h5 class="card-title">{{ p.nome }}</h5>
                     <p class="text-muted">R$ {{ p.preco }}</p>
 
+                    <a href="{% url 'produto' p.id %}" class="btn btn-outline-primary w-100 mb-2">
+                        Ver Detalhes
+                    </a>
+
                     <a href="{% url 'comprar' p.id %}" class="btn btn-primary w-100">
                         Comprar
                     </a>
+
                 </div>
 
             </div>
