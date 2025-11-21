@@ -8,6 +8,8 @@ from .models import Produto, Pedido
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
+from .models import Contato
+from django.contrib import messages
 
 def index(request):
     pagina = Pagina.objects.first()
@@ -64,3 +66,21 @@ def cadastro(request):
         form = UserCreationForm()
 
     return render(request, 'core/cadastro.html', {'form': form})
+
+def contato(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        mensagem = request.POST.get('mensagem')
+
+        Contato.objects.create(
+            nome=nome,
+            email=email,
+            mensagem=mensagem
+        )
+
+        messages.success(request, 'Mensagem enviada com sucesso!')
+
+        return redirect('contato')
+
+    return render(request, 'core/contato.html')

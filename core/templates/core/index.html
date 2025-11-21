@@ -1,30 +1,56 @@
 {% extends 'core/base.html' %}
-
-{% block title %}Página Inicial{% endblock %}
+{% block title %}{{ pagina.nome_do_site }}{% endblock %}
 
 {% block content %}
 
-<h1 class="mb-4">{{ pagina.texto_chamada }}</h1>
+<div class="container mt-5">
 
-<p>{{ pagina.texto_sobre }}</p>
+    <div class="row align-items-center">
 
-<hr>
+        <div class="col-md-6">
+            <img src="{{ pagina.imagem_sobre.url }}" class="img-fluid rounded shadow"
+                 alt="Sobre {{ pagina.nome_do_site }}">
+        </div>
 
-<h2 class="mb-3">Instrumentos Disponíveis</h2>
+        <div class="col-md-6">
+            <h2 class="mb-3">{{ pagina.titulo_sobre }}</h2>
+            <p>{{ pagina.descricao_sobre }}</p>
+        </div>
 
-<div class="row">
-    {% for produto in produtos %}
-    <div class="col-md-4 mb-4">
-        <div class="card shadow-sm">
-            <img src="{{ produto.foto.url }}" class="card-img-top" style="height: 250px; object-fit: cover;">
-            <div class="card-body">
-                <h5 class="card-title">{{ produto.nome }}</h5>
-                <p class="card-text">R$ {{ produto.preco }}</p>
-                <a href="{% url 'comprar' produto.id %}" class="btn btn-primary w-100">Comprar</a>
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<div class="container">
+
+    <h3 class="mb-4">Nossos Instrumentos</h3>
+
+    <div class="row">
+
+        {% for p in produtos %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow" style="border-radius: 12px;">
+
+                <img src="{{ p.foto.url }}" class="card-img-top"
+                     style="height: 240px; object-fit: cover; border-radius: 12px 12px 0 0;">
+
+                <div class="card-body">
+                    <h5>{{ p.nome }}</h5>
+                    <p class="text-muted">R$ {{ p.preco }}</p>
+
+                    <a href="{% url 'comprar' p.id %}" class="btn btn-primary w-100">
+                        Comprar
+                    </a>
+                </div>
+
             </div>
         </div>
+        {% endfor %}
+
     </div>
-    {% endfor %}
+
 </div>
 
 {% endblock %}

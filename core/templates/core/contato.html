@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+{% block title %}Contato{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+
+    <h2 class="mb-4">Fale Conosco</h2>
+
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="alert alert-success">{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card shadow p-4" style="border-radius: 12px; max-width: 650px; margin: auto;">
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Nome</label>
+                <input type="text" name="nome" required class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" required class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Mensagem</label>
+                <textarea name="mensagem" rows="4" required class="form-control"></textarea>
+            </div>
+
+            <button class="btn btn-primary w-100 mt-2">Enviar</button>
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}
