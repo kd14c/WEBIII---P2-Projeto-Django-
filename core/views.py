@@ -1,15 +1,16 @@
-from django.shortcuts import render
-from .models import Pagina, Produto
+from .models import Pagina, Produto, Pedido
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Produto, Pedido
 
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.contrib.auth import login
 
 from .models import Contato
 from django.contrib import messages
+
+from decimal import Decimal
 
 def index(request):
     pagina = Pagina.objects.first()
@@ -69,16 +70,36 @@ def perfil(request):
 
 
 def cadastro(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            usuario = form.save()
-            login(request, usuario)
-            return redirect('index')
-    else:
-        form = UserCreationForm()
+    if request.method == "POST":
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        senha = request.POST.get("senha")
+        senha2 = request.POST.get("senha2")
 
-    return render(request, 'core/cadastro.html', {'form': form})
+        # validações
+        if senha != senha2:
+            messages.error(request, "As senhas não coincidem.")
+            return render(request, "core/cadastro.html")
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Nome de usuário já está em uso.")
+            return render(request, "core/cadastro.html")
+
+        if email and User.objects.filter(email=email).exists():
+            messages.error(request, "Email já está cadastrado.")
+            return render(request, "core/cadastro.html")
+
+        # criar usuário
+        User.objects.create_user(
+            username=username,
+            email=email,
+            password=senha
+        )
+
+        messages.success(request, "Conta criada com sucesso! Faça login.")
+        return redirect("login")
+
+    return render(request, "core/cadastro.html")
 
 def contato(request):
     if request.method == 'POST':
@@ -100,13 +121,8 @@ def contato(request):
 
 
 def produtos(request):
-    lista = Produto.objects.all()
-    pagina = Pagina.objects.first()
-
-    return render(request, 'core/produtos.html', {
-        'produtos': lista,
-        'pagina': pagina
-    })
+    produtos = Produto.objects.all()
+    return render(request, "core/produtos.html", {"produtos": produtos})
 
 
 def produto(request, id):
@@ -117,3 +133,37 @@ def produto(request, id):
         'produto': item,
         'pagina': pagina
     })
+
+@login_required
+def pedido(request, produto_id):
+    produto = get_object_or_404(Produto, id=produto_id)
+
+    if request.method == "POST":
+        quantidade = int(request.POST.get("quantidade"))
+
+        # verificar estoque
+        if quantidade > produto.estoque:
+            return render(request, "core/pedido.html", {
+                "produto": produto,
+                "erro": "Quantidade acima do estoque disponível."
+            })
+
+        # calcular total corretamente
+        total = Decimal(produto.preco) * quantidade
+
+        # criar pedido
+        pedido = Pedido.objects.create(
+            usuario=request.user,
+            produto=produto,
+            quantidade=quantidade,
+            total=total
+        )
+
+        # atualizar estoque
+        produto.estoque -= quantidade
+        produto.save()
+
+        # redirecionar para o perfil
+        return redirect("perfil")
+
+    return render(request, "core/pedido.html", {"produto": produto})
