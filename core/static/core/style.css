@@ -9,18 +9,18 @@
 /* HERO */
 .hero {
     width: 100%;
-    height: 320px;
+    min-height: 320px;
     background: linear-gradient(180deg, #000000, #222222);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px;
+    padding: 40px 20px;
 }
 
 .hero h1 {
-    font-size: 2.8rem;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
     margin-bottom: 15px;
 }
 
@@ -31,7 +31,13 @@
     color: black;
     text-decoration: none;
     font-weight: bold;
+    transition: 0.2s;
 }
+
+.hero-btn:hover {
+    opacity: 0.85;
+}
+
 
 /* SOBRE */
 .sobre {
@@ -43,17 +49,29 @@
 }
 
 .sobre-texto {
-    width: 50%;
+    flex: 1;
+}
+
+.sobre-texto p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.sobre-imagem {
+    flex: 1;
+    text-align: center;
 }
 
 .sobre-imagem img {
-    width: 420px;
+    width: 100%;
+    max-width: 420px;
     border-radius: 10px;
+    box-shadow: 0 0 10px #ccc;
 }
 
 /* PRODUTOS */
 .produtos-section {
-    padding: 60px;
+    padding: 60px 20px;
     background: #f7f7f7;
 }
 
@@ -65,12 +83,17 @@
 }
 
 .card-produto {
-    width: 250px;
+    width: min(250px, 90%);
     background: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px #ccc;
     text-align: center;
+    transition: 0.2s;
+}
+
+.card-produto:hover {
+    transform: scale(1.03);
 }
 
 .card-produto img {
@@ -90,16 +113,26 @@
     color: white;
     padding: 8px 18px;
     border-radius: 5px;
+    transition: 0.2s;
+}
+
+.btn-comprar:hover {
+    opacity: 0.85;
 }
 
 /* CONTATO */
 .contato-section {
-    padding: 60px;
+    padding: 60px 20px;
 }
 
 .form-contato {
     max-width: 500px;
     margin-bottom: 30px;
+}
+
+.form-contato input,
+.form-contato textarea {
+    width: 100%;
 }
 
 .btn-enviar {
@@ -108,6 +141,11 @@
     padding: 10px 18px;
     border-radius: 5px;
     border: none;
+    transition: 0.2s;
+}
+
+.btn-enviar:hover {
+    opacity: 0.85;
 }
 
 /* MAPA */
@@ -116,31 +154,67 @@
     height: 300px;
     border: none;
     margin-top: 20px;
+    border-radius: 8px;
 }
 
-/* RESPONSIVO */
-@media(max-width: 900px) {
-    .sobre {
-        flex-direction: column;
-    }
-
-    .sobre-texto, .sobre-imagem {
-        width: 100%;
-        text-align: center;
-    }
-
-    .sobre-imagem img {
-        width: 100%;
-    }
-}
-
-/* PÁGINA DE PRODUTOS */
+/* PRODUTOS LISTA */
 .produtos-page {
-    padding: 60px;
+    padding: 60px 20px;
     text-align: center;
 }
 
 .produtos-page h1 {
-    font-size: 2.3rem;
+    font-size: clamp(1.8rem, 4vw, 2.3rem);
     margin-bottom: 30px;
+}
+
+/* RESPONSIVO — versão aprimorada */
+@media (max-width: 900px) {
+
+    .sobre {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 20px;
+    }
+
+    .sobre-texto,
+    .sobre-imagem {
+        width: 100%;
+    }
+
+    .sobre-imagem img {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .produtos-container {
+        gap: 15px;
+    }
+
+    .card-produto {
+        width: 90%;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .hero {
+        padding: 50px 20px;
+    }
+
+    .hero-btn {
+        padding: 8px 20px;
+    }
+
+    .sobre-texto p {
+        font-size: 1rem;
+    }
+
+    .form-contato {
+        width: 100%;
+    }
+
+    .preco {
+        font-size: 1rem;
+    }
 }

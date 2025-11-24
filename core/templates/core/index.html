@@ -3,8 +3,6 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'core/style.css' %}">
-
 <!-- HERO SECTION -->
 <section class="hero">
     <div class="hero-text">
@@ -14,27 +12,32 @@
 </section>
 
 <!-- SOBRE SECTION -->
-<section class="sobre">
+<section class="sobre container">
     <div class="sobre-texto">
         <h2>Sobre Nós</h2>
         <p>{{ pagina_global.texto_sobre }}</p>
     </div>
 
     <div class="sobre-imagem">
-        <img src="{{ pagina_global.imagem_sobre.url }}" alt="Sobre nós">
+        {% if pagina_global.imagem_sobre %}
+            <img src="{{ pagina_global.imagem_sobre.url }}" alt="Sobre nós">
+        {% else %}
+            <p>(Adicione uma imagem em Admin → Pagina → imagem_sobre)</p>
+        {% endif %}
     </div>
 </section>
 
 <!-- PRODUTOS SECTION -->
 <section class="produtos-section">
-    <h2>Produtos</h2>
+    <h2 class="text-center mb-4">Produtos</h2>
 
     <div class="produtos-container">
         {% for produto in produtos %}
         <div class="card-produto">
-            <img src="{{ produto.foto.url }}" alt="Imagem do produto">
+            <img src="{{ produto.foto.url }}" alt="{{ produto.nome }}">
             <h3>{{ produto.nome }}</h3>
             <p class="preco">R$ {{ produto.preco }}</p>
+
             <a href="{% url 'pedido' produto.id %}" class="btn-comprar">Comprar</a>
         </div>
         {% endfor %}
@@ -42,7 +45,8 @@
 </section>
 
 <!-- CONTATO SECTION -->
-<section class="contato-section">
+<section class="contato-section container">
+
     <h2>Fale Conosco</h2>
 
     <form method="POST" class="form-contato">
@@ -51,7 +55,7 @@
         <button type="submit" class="btn-enviar">Enviar</button>
     </form>
 
-    <div class="contato-info">
+    <div class="contato-info mt-3">
         <p><strong>Endereço:</strong> {{ pagina_global.endereco }}</p>
         <p><strong>WhatsApp:</strong> {{ pagina_global.whatsapp }}</p>
         <p><strong>Email:</strong> {{ pagina_global.email }}</p>
@@ -60,7 +64,7 @@
 </section>
 
 <!-- MAPA -->
-<section class="mapa">
+<section class="mapa container mb-5">
     <iframe 
         src="https://www.google.com/maps?q={{ pagina_global.endereco|urlencode }}&output=embed"
         loading="lazy">
