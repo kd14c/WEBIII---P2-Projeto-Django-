@@ -166,3 +166,7 @@ def pedido(request, produto_id):
         return redirect("perfil")
 
     return render(request, "core/pedido.html", {"produto": produto})
+
+def sobre(request):
+    pagina = Pagina.objects.first()
+    return render(request, "core/sobre.html", {"pagina": pagina})
