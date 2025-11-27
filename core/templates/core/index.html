@@ -13,19 +13,33 @@
 
 <!-- SOBRE SECTION -->
 <section class="sobre container">
+
     <div class="sobre-texto">
-        <h2>Sobre Nós</h2>
-        <p>{{ pagina_global.texto_sobre }}</p>
+        <h2 class="section-title">Sobre Nós</h2>
+
+        <p class="text-muted-2" style="font-size:1.05rem; line-height:1.7;">
+            {{ pagina_global.texto_sobre }}
+        </p>
+
+        <a href="{% url 'produtos' %}" class="btn-primary mt-3" style="display:inline-block;">
+            Ver Instrumentos
+        </a>
     </div>
 
     <div class="sobre-imagem">
         {% if pagina_global.imagem_sobre %}
-            <img src="{{ pagina_global.imagem_sobre.url }}" alt="Sobre nós">
+            <img src="{{ pagina_global.imagem_sobre.url }}" alt="Sobre nós" class="sobre-img-enhanced">
         {% else %}
-            <p>(Adicione uma imagem em Admin → Pagina → imagem_sobre)</p>
+            <div class="section-card center">
+                <p class="text-muted-2">
+                    (Adicione uma imagem em Admin → Pagina → imagem_sobre)
+                </p>
+            </div>
         {% endif %}
     </div>
+
 </section>
+
 
 <!-- PRODUTOS SECTION -->
 <section class="produtos-section">
