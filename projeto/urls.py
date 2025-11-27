@@ -30,7 +30,7 @@ urlpatterns = [
     path('cadastro/', views.cadastro, name='cadastro'),
     path('contato/', views.contato, name='contato'),
     path('produtos/', views.produtos, name='produtos'),
-    path('produto/<int:id>/', views.produto, name='produto'),
+    
     path("pedido/<int:produto_id>/", views.pedido, name="pedido"),
     path("sobre/", views.sobre, name="sobre"),
 ]

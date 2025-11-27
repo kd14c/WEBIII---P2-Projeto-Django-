@@ -25,7 +25,6 @@
           <div>
             <p class="preco">R$ {{ produto.preco }}</p>
             <div class="card-actions">
-              <a href="{% url 'produto' produto.id %}" class="btn-ghost">Ver</a>
               <a href="{% url 'pedido' produto.id %}" class="btn-primary">Comprar</a>
             </div>
           </div>
