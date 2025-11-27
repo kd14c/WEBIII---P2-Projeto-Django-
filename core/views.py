@@ -1,14 +1,10 @@
 from .models import Pagina, Produto, Pedido
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-
 from django.contrib.auth.models import User
 from django.contrib.auth import login
-
 from .models import Contato
 from django.contrib import messages
-
 from decimal import Decimal
 
 def index(request):
@@ -19,9 +15,6 @@ def index(request):
         'pagina': pagina,
         'produtos': produtos
     })
-
-
-
 
 
 @login_required
@@ -40,7 +33,6 @@ def cadastro(request):
         senha = request.POST.get("senha")
         senha2 = request.POST.get("senha2")
 
-        # validações
         if senha != senha2:
             messages.error(request, "As senhas não coincidem.")
             return render(request, "core/cadastro.html")
@@ -53,7 +45,6 @@ def cadastro(request):
             messages.error(request, "Email já está cadastrado.")
             return render(request, "core/cadastro.html")
 
-        # criar usuário
         User.objects.create_user(
             username=username,
             email=email,
@@ -64,6 +55,7 @@ def cadastro(request):
         return redirect("login")
 
     return render(request, "core/cadastro.html")
+
 
 def contato(request):
     if request.method == 'POST':
@@ -93,7 +85,6 @@ def produtos(request):
     })
 
 
-
 def produto(request, id):
     item = get_object_or_404(Produto, id=id)
     pagina = Pagina.objects.first()
@@ -103,6 +94,7 @@ def produto(request, id):
         'pagina': pagina
     })
 
+
 @login_required
 def pedido(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)
@@ -110,17 +102,14 @@ def pedido(request, produto_id):
     if request.method == "POST":
         quantidade = int(request.POST.get("quantidade"))
 
-        # verificar estoque
         if quantidade > produto.estoque:
             return render(request, "core/pedido.html", {
                 "produto": produto,
                 "erro": "Quantidade acima do estoque disponível."
             })
 
-        # calcular total corretamente
         total = Decimal(produto.preco) * quantidade
 
-        # criar pedido
         pedido = Pedido.objects.create(
             usuario=request.user,
             produto=produto,
@@ -128,14 +117,13 @@ def pedido(request, produto_id):
             total=total
         )
 
-        # atualizar estoque
         produto.estoque -= quantidade
         produto.save()
 
-        # redirecionar para o perfil
         return redirect("perfil")
 
     return render(request, "core/pedido.html", {"produto": produto})
+
 
 def sobre(request):
     pagina = Pagina.objects.first()
