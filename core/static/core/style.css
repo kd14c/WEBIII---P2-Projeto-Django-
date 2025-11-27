@@ -74,6 +74,16 @@ body{
 .sobre-imagem { flex:1; text-align:center; }
 .sobre-imagem img{ max-width:420px; width:100%; border-radius:10px; box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
 
+.sobre-img-enhanced {
+  max-width: 480px;
+  width: 100%;
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.6);
+  border:1px solid rgba(255,255,255,0.04);
+}
+
+
 /* PRODUTOS GRID */
 .produtos-section { padding:30px 0; }
 .produtos-container {
