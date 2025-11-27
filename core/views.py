@@ -85,6 +85,7 @@ def produtos(request):
     })
 
 
+@login_required
 def produto(request, id):
     item = get_object_or_404(Produto, id=id)
     pagina = Pagina.objects.first()
