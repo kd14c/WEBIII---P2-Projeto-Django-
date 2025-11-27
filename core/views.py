@@ -21,42 +21,7 @@ def index(request):
     })
 
 
-@login_required
-def comprar(request, id):
-    produto = get_object_or_404(Produto, id=id)
 
-    if request.method == 'POST':
-        quantidade = int(request.POST.get('quantidade'))
-
-        # Validação de estoque
-        if quantidade < 1:
-            messages.error(request, "Quantidade inválida.")
-            return redirect('comprar', id=id)
-
-        if quantidade > produto.estoque:
-            messages.error(request, "Quantidade maior que o estoque disponível.")
-            return redirect('comprar', id=id)
-
-        total = quantidade * produto.preco
-
-        # Atualiza estoque
-        produto.estoque -= quantidade
-        produto.save()
-
-        # Cria pedido
-        Pedido.objects.create(
-            usuario=request.user,
-            produto=produto,
-            quantidade=quantidade,
-            total=total
-        )
-
-        messages.success(request, "Pedido realizado com sucesso!")
-        return redirect('perfil')
-
-    return render(request, 'core/pedido.html', {
-        'produto': produto
-    })
 
 
 @login_required
