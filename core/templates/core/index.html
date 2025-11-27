@@ -4,12 +4,16 @@
 {% block content %}
 
 <!-- HERO SECTION -->
-<section class="hero">
-    <div class="hero-text">
-        <h1>{{ pagina_global.texto_chamada }}</h1>
-        <a href="{% url 'cadastro' %}" class="hero-btn">CADASTRE-SE</a>
+<section class="hero hero-enhanced">
+    <div class="hero-content">
+        <h1 class="hero-title">{{ pagina_global.texto_chamada }}</h1>
+
+        <a href="{% url 'cadastro' %}" class="hero-btn hero-btn-glow">
+            CADASTRE-SE
+        </a>
     </div>
 </section>
+
 
 <!-- SOBRE SECTION -->
 <section class="sobre container">
