@@ -172,4 +172,3 @@ def sobre(request):
     return render(request, "core/sobre.html", {
         "pagina": pagina
     })
-
