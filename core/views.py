@@ -120,8 +120,13 @@ def contato(request):
 
 
 def produtos(request):
-    produtos = Produto.objects.all()
-    return render(request, "core/produtos.html", {"produtos": produtos})
+    busca = request.GET.get("busca", "")
+    produtos = Produto.objects.filter(nome__icontains=busca)
+    return render(request, "core/produtos.html", {
+        "produtos": produtos,
+        "busca": busca
+    })
+
 
 
 def produto(request, id):
