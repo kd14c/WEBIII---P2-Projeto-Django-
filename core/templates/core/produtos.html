@@ -1,28 +1,37 @@
-{% extends "core/base.html" %}
-{% load static %}
+{% extends 'core/base.html' %}
+{% block title %}Produtos - {{ pagina_global.nome_do_site }}{% endblock %}
 
 {% block content %}
+<div class="container">
+  <h3 class="section-title">Produtos</h3>
 
-<link rel="stylesheet" href="{% static 'core/style.css' %}">
+  <div class="mb-3">
+    <form method="get" class="d-flex gap-2">
+      <input name="busca" class="form-control" placeholder="Buscar produto..." value="{{ busca|default:'' }}">
+      <button class="btn-ghost">Buscar</button>
+    </form>
+  </div>
 
-<section class="produtos-page">
-    <h1>Todos os Produtos</h1>
-
-    <div class="produtos-container">
-        {% for produto in produtos %}
-        <div class="card-produto">
-            <img src="{{ produto.foto.url }}" alt="{{ produto.nome }}">
-
+  <div class="produtos-container">
+    {% for produto in produtos %}
+      <div class="card-produto">
+        <img src="{{ produto.foto.url }}" alt="{{ produto.nome }}">
+        <div class="body">
+          <div>
             <h3>{{ produto.nome }}</h3>
+            <p class="text-muted-2">{{ produto.descricao|truncatechars:80 }}</p>
+          </div>
 
+          <div>
             <p class="preco">R$ {{ produto.preco }}</p>
-
-            <a href="{% url 'pedido' produto.id %}" class="btn-comprar">
-                Comprar
-            </a>
+            <div class="card-actions">
+              <a href="{% url 'produto' produto.id %}" class="btn-ghost">Ver</a>
+              <a href="{% url 'pedido' produto.id %}" class="btn-primary">Comprar</a>
+            </div>
+          </div>
         </div>
-        {% endfor %}
-    </div>
-</section>
-
+      </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}

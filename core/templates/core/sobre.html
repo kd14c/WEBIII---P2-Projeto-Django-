@@ -1,35 +1,21 @@
 {% extends 'core/base.html' %}
-{% block title %}Sobre - {{ pagina.nome_do_site }}{% endblock %}
+{% block title %}Sobre - {{ pagina_global.nome_do_site }}{% endblock %}
 
 {% block content %}
-
-<div class="container mt-4 mb-5">
-
-    <h1 class="mb-4 text-center">Sobre o Projeto</h1>
-
-    <div class="row align-items-center">
-
-        <!-- TEXTO -->
-        <div class="col-md-6 mb-4">
-            <h3>{{ pagina.nome_do_site }}</h3>
-            <p style="font-size: 1.1rem;">
-                {{ pagina.texto_sobre }}
-            </p>
-        </div>
-
-        <!-- IMAGEM -->
-        <div class="col-md-6 text-center">
-            {% if pagina.imagem_sobre %}
-                <img src="{{ pagina.imagem_sobre.url }}" 
-                     class="img-fluid rounded shadow"
-                     style="max-height: 350px; object-fit: cover;">
-            {% else %}
-                <p>Adicione uma imagem em Administração → Pagina → imagem_sobre</p>
-            {% endif %}
-        </div>
-
+<div class="container">
+  <div class="section-card mt-4 sobre">
+    <div class="sobre-texto">
+      <h3>Sobre o Projeto</h3>
+      <p class="text-muted-2">{{ pagina_global.texto_sobre }}</p>
+      <p class="text-muted-2 mt-3">Este projeto foi desenvolvido para a disciplina de Web III, ... (adicione seu texto).</p>
     </div>
-
+    <div class="sobre-imagem">
+      {% if pagina_global.imagem_sobre %}
+        <img src="{{ pagina_global.imagem_sobre.url }}" alt="Sobre">
+      {% else %}
+        <div style="height:220px; width:100%; background:rgba(255,255,255,0.02); border-radius:8px;"></div>
+      {% endif %}
+    </div>
+  </div>
 </div>
-
 {% endblock %}

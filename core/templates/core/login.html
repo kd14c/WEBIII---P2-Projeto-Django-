@@ -1,23 +1,30 @@
 {% extends 'core/base.html' %}
-{% block title %}Login{% endblock %}
+{% block title %}Login - {{ pagina_global.nome_do_site }}{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-center">
-    <div class="card shadow p-4" style="width: 420px; border-radius: 12px;">
+<div class="container" style="max-width:420px;">
+  <div class="section-card mt-4">
+    <h3 class="center mb-3">Entrar</h3>
 
-        <h3 class="mb-3 text-center">Entrar</h3>
+    {% if form.errors %}
+      <div class="alert alert-danger">Usuário ou senha inválidos.</div>
+    {% endif %}
 
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
+    <form method="post" autocomplete="on">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label text-muted-2">Usuário</label>
+        <input type="text" name="username" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label text-muted-2">Senha</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
 
-            <button class="btn btn-primary w-100 mt-3">Entrar</button>
-        </form>
+      <button class="btn-primary w-100">Entrar</button>
+    </form>
 
-        <p class="text-center mt-3">
-            Não tem conta? <a href="{% url 'cadastro' %}">Cadastre-se</a>
-        </p>
-
-    </div>
+    <p class="center text-muted-2 mt-3">ou <a href="{% url 'cadastro' %}">criar conta</a></p>
+  </div>
 </div>
 {% endblock %}

@@ -11,10 +11,22 @@
 
     <link rel="stylesheet" href="{% static 'core/style.css' %}">
 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <div class="container mt-3">
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="alert alert-{{ msg.tags }}">{% autoescape off %}{{ msg }}{% endautoescape %}</div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
     <div class="container">
 
         <a class="navbar-brand" href="{% url 'index' %}">

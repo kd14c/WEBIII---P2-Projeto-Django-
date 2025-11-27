@@ -1,43 +1,29 @@
 {% extends 'core/base.html' %}
-{% block title %}{{ produto.nome }}{% endblock %}
+{% block title %}{{ produto.nome }} - {{ pagina_global.nome_do_site }}{% endblock %}
 
 {% block content %}
+<div class="container" style="max-width: 980px;">
+  <div class="section-card mt-4">
+    <div class="row g-3 align-items-center">
+      <div class="col-md-6 text-center">
+        <img src="{{ produto.foto.url }}" alt="{{ produto.nome }}" style="width:100%; max-height:420px; object-fit:cover; border-radius:8px;">
+      </div>
+      <div class="col-md-6">
+        <h2>{{ produto.nome }}</h2>
+        <p class="text-muted-2">{{ produto.descricao }}</p>
+        <p class="preco">R$ {{ produto.preco }}</p>
+        <p class="text-muted-2">Estoque: {{ produto.estoque }}</p>
 
-<div class="container mt-5 mb-5">
-
-    <div class="card shadow p-4" style="border-radius: 12px; max-width: 1000px; margin: auto;">
-
-        <div class="row">
-
-            <!-- Imagem do Produto -->
-            <div class="col-md-6 text-center mb-3">
-                <img src="{{ produto.foto.url }}"
-                     class="img-fluid rounded shadow"
-                     style="max-height: 350px; object-fit: cover;">
-            </div>
-
-            <!-- Detalhes -->
-            <div class="col-md-6">
-
-                <h3 class="mb-3">{{ produto.nome }}</h3>
-
-                <p class="text-muted" style="font-size: 16px; line-height: 1.7;">
-                    {{ produto.descricao }}
-                </p>
-
-                <h4 class="mt-4 mb-4">Preço: <strong>R$ {{ produto.preco }}</strong></h4>
-
-                <a href="{% url 'comprar' produto.id %}" class="btn btn-success w-100"
-                   style="font-size: 18px; padding: 12px;">
-                    Comprar Agora
-                </a>
-
-            </div>
-
-        </div>
-
+        <form method="post" action="{% url 'pedido' produto.id %}">
+          {% csrf_token %}
+          <div class="mb-2">
+            <label class="form-label text-muted-2">Quantidade</label>
+            <input type="number" name="quantidade" min="1" max="{{ produto.estoque }}" value="1" class="form-control" style="max-width:120px;">
+          </div>
+          <button class="btn-primary">Confirmar Pedido</button>
+        </form>
+      </div>
     </div>
-
+  </div>
 </div>
-
 {% endblock %}
