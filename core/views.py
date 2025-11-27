@@ -169,4 +169,7 @@ def pedido(request, produto_id):
 
 def sobre(request):
     pagina = Pagina.objects.first()
-    return render(request, "core/sobre.html", {"pagina": pagina})
+    return render(request, "core/sobre.html", {
+        "pagina": pagina
+    })
+
